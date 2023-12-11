@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "257911614710",
+    "project_id": "monapp-251c9",
+    "storage_bucket": "monapp-251c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257911614710:android:5fb763239efdb045d6d0d7",
+        "android_client_info": {
+          "package_name": "com.example.shopapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257911614710-cuv0vbgsgguvvfe1t9tf4p4grkga4e6t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8IH1OqBQDWrbHAf1oCja3UOo4gGkHUDI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257911614710-cuv0vbgsgguvvfe1t9tf4p4grkga4e6t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
