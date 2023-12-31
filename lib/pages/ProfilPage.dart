@@ -22,84 +22,86 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mon Profil'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {
-              setState(() {
-                _isEditing = !_isEditing;
-              });
-            },
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const CircleAvatar(
-              radius: 60,
-              backgroundImage: AssetImage(
-                  'assets/americain.jpg'), // Remplacez par le chemin de votre image de profil
-            ),
-            const SizedBox(height: 16),
-            _isEditing
-                ? Column(
-                    children: [
-                      TextField(
-                        controller: _nameController,
-                        decoration: const InputDecoration(labelText: 'Nom'),
-                      ),
-                      TextField(
-                        controller: _emailController,
-                        decoration:
-                            const InputDecoration(labelText: 'Adresse E-mail'),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Mettez à jour les informations de l'utilisateur avec les valeurs des contrôleurs.
-                          setState(() {
-                            name = _nameController.text;
-                            email = _emailController.text;
-                            _isEditing = false;
-                          });
-                        },
-                        child: const Text('Enregistrer'),
-                      ),
-                    ],
-                  )
-                : Column(
-                    children: [
-                      Text(
-                        name,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        email,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-            const SizedBox(height: 16),
-            ElevatedButton(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Mon Profil'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.edit),
               onPressed: () {
-                authController.singOut();
+                setState(() {
+                  _isEditing = !_isEditing;
+                });
               },
-              child: const Text('Déconnexion'),
             ),
           ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const CircleAvatar(
+                radius: 60,
+                backgroundImage: AssetImage(
+                    'assets/americain.jpg'), // Remplacez par le chemin de votre image de profil
+              ),
+              const SizedBox(height: 16),
+              _isEditing
+                  ? Column(
+                      children: [
+                        TextField(
+                          controller: _nameController,
+                          decoration: const InputDecoration(labelText: 'Nom'),
+                        ),
+                        TextField(
+                          controller: _emailController,
+                          decoration: const InputDecoration(
+                              labelText: 'Adresse E-mail'),
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Mettez à jour les informations de l'utilisateur avec les valeurs des contrôleurs.
+                            setState(() {
+                              name = _nameController.text;
+                              email = _emailController.text;
+                              _isEditing = false;
+                            });
+                          },
+                          child: const Text('Enregistrer'),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        Text(
+                          name,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          email,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  authController.singOut();
+                },
+                child: const Text('Déconnexion'),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -90,9 +90,7 @@ class _SelecteurCategorieProduitState extends State<SelecteurCategorieProduit> {
                   setState(() {
                     final newCategory = _otherCategoryController.text;
                     if (newCategory.isNotEmpty) {
-                      // Ajoutez la nouvelle catégorie à la liste
                       widget.categories.add(newCategory);
-                      // Sélectionnez automatiquement la nouvelle catégorie
                       _selectedCategory = newCategory;
                       widget.onSelect(newCategory);
                     }

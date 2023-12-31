@@ -31,8 +31,9 @@ class Produit {
     userId = (snapshot.data() as dynamic)['userId'] ?? '';
     categorie = (snapshot.data() as dynamic)['categorie'];
     // prix = double.parse((snapshot.data() as dynamic)['prix']);
+
+    prix = (snapshot.data() as dynamic)['prix'];
     // prix = 0.0;
-    prix = 0.0;
     description = (snapshot.data() as dynamic)['description'];
     images = List<String>.from((snapshot.data() as dynamic)['images'] ?? []);
     id = (snapshot.data() as dynamic)['id'];

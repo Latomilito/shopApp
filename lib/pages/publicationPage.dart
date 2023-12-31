@@ -15,13 +15,9 @@ import 'package:uuid/uuid.dart';
 import '../main.dart';
 import '../widget/ChampImage.dart';
 import '../widget/ChampNomProduit.dart';
-import '../widget/ChampStok.dart';
 import '../widget/Champdescription.dart';
 import '../widget/Champprix.dart';
 import '../widget/SelectCategorie.dart';
-import '../widget/buttonAppercu.dart';
-import 'apercuPage.dart';
-import 'home1.dart';
 
 class PublicationPage extends StatefulWidget {
   Produit? produit;
@@ -341,7 +337,12 @@ class _PublicationPageState extends State<PublicationPage> {
         .ref()
         .child('images/${DateTime.now().millisecondsSinceEpoch}.jpg');
     final uploadTask = storageRef.putFile(imageFile);
+    uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+      print(
+          'Progression du téléchargement: ${snapshot.bytesTransferred}/${snapshot.totalBytes}');
+    });
     final snapshot = await uploadTask.whenComplete(() {});
+
     final downloadUrl = await snapshot.ref.getDownloadURL();
     return downloadUrl;
   }
@@ -362,14 +363,14 @@ class _PublicationPageState extends State<PublicationPage> {
 
   Future<void> ajouterProduits(
       List<Produit> produits, BuildContext context) async {
+    Get.defaultDialog(
+        title: 'chargement..',
+        content: const SizedBox(
+          height: 50,
+          width: 50,
+          child: CircularProgressIndicator(),
+        ));
     for (int i = 0; i < produits.length; i++) {
-      Get.defaultDialog(
-          title: 'chargement..',
-          content: const SizedBox(
-            height: 50,
-            width: 50,
-            child: CircularProgressIndicator(),
-          ));
       Produit produit = produits[i];
 
       final downloadUrl =
@@ -380,12 +381,9 @@ class _PublicationPageState extends State<PublicationPage> {
       await repositoryController.ajouterProduit(produit, context);
     }
 
-    // Vider la liste après avoir traité tous les produits
     produits.clear();
     setState(() {});
-
-    // Rediriger ou effectuer d'autres actions si nécessaire
-    // Par exemple, Get.offAll(() => const AccueilPage());
+    Get.back();
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();

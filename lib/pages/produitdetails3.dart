@@ -2,16 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shopapp/models/StandarPublication.dart';
 import 'package:shopapp/models/productModels.dart';
-import 'package:shopapp/pages/producDetails2.dart';
-
+import 'package:shopapp/widget/produiWidget.dart';
 import '../controllers.dart/appController.dart';
-import 'home2.dart';
+import 'BoutiquePage.dart';
 
+// ignore: must_be_immutable
 class DetailsPage3 extends StatefulWidget {
   List<Produit>? produits;
   PublicationStandard? publication;
   DetailsPage3({super.key, this.publication, this.produits});
-
   @override
   State<DetailsPage3> createState() => _DetailsPage3State();
 }
@@ -27,7 +26,7 @@ class _DetailsPage3State extends State<DetailsPage3> {
               onPressed: () {},
               icon: const Icon(
                 Icons.more_vert,
-                color: Colors.orange,
+                color: Colors.red,
               ),
             )
           ],
@@ -36,7 +35,7 @@ class _DetailsPage3State extends State<DetailsPage3> {
           // title:
         ),
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(2),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -47,7 +46,7 @@ class _DetailsPage3State extends State<DetailsPage3> {
                         children: [
                           const Expanded(
                               child: Divider(
-                            color: Colors.orange,
+                            color: Colors.red,
                           )),
                           ClipRRect(
                             borderRadius:
@@ -61,7 +60,7 @@ class _DetailsPage3State extends State<DetailsPage3> {
                           ),
                           const Expanded(
                               child: Divider(
-                            color: Colors.orange,
+                            color: Colors.red,
                           ))
                         ],
                       ),
@@ -69,30 +68,38 @@ class _DetailsPage3State extends State<DetailsPage3> {
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
-                            return home();
+                            return BoutiquePage();
                           }));
                         },
                         child: const Text(
                           'Sana\'s market',
-                          style: TextStyle(color: Colors.orange, fontSize: 15),
+                          style: TextStyle(color: Colors.red, fontSize: 15),
                         ),
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange,
+                            backgroundColor: Colors.white,
                             shape: const RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(30)))),
                         onPressed: () {},
-                        child: const Text('S\'abonner'),
+                        child: const Text(
+                          'S\'abonner',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
                       )
                     ],
                   ),
                 ),
-                Text(
-                  widget.publication!.description!,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 17),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  child: Text(
+                    widget.publication!.description!,
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -100,75 +107,9 @@ class _DetailsPage3State extends State<DetailsPage3> {
                 Wrap(
                   alignment: WrapAlignment.start,
                   children: widget.produits!
-                      .map(
-                        (e) => GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) {
-                              return DetailsPage2(
-                                produit: e,
-                                isProduiCherche: false,
-                              );
-                            }));
-                          },
-                          child: Stack(
-                            children: [
-                              Container(
-                                height:
-                                    MediaQuery.of(context).size.height / 3.5,
-                                width: MediaQuery.of(context).size.width / 2.2,
-                                margin: const EdgeInsets.all(2),
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: CachedNetworkImage(
-                                        width: double.infinity,
-                                        fit: BoxFit.cover,
-                                        imageUrl: e.images!.first,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                child: Container(
-                                  margin: const EdgeInsets.all(2),
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 10),
-                                  color: Colors.white.withOpacity(0.8),
-                                  // height: 50,
-                                  width:
-                                      MediaQuery.of(context).size.width / 2.05,
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            e.nom == '' ? e.categorie! : e.nom!,
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 17),
-                                          ),
-                                          const Text(
-                                            '5000 FCFA',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.orange,
-                                                backgroundColor: Colors.white),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
+                      .map((e) => ProduitWidget(
+                            produit: e,
+                          ))
                       .toList(),
                 )
               ],

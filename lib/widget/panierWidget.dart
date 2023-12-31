@@ -1,34 +1,24 @@
-// ignore: file_names
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shopapp/controllers.dart/appController.dart';
-
-import '../models/productModels.dart';
 import 'package:shopapp/models/CartItemModel.dart';
-// import '../Productmodels.dart';
 
-class ApercuPanier extends StatefulWidget {
+class panierWidget extends StatefulWidget {
   CartItemModel? cartitem;
 
   int? quantite;
 
-  ApercuPanier({super.key, this.cartitem, required this.quantite});
+  panierWidget({super.key, this.cartitem, required this.quantite});
 
   @override
-  State<ApercuPanier> createState() => _ApercuPanierState();
+  State<panierWidget> createState() => _ApercuPanierState();
 }
 
-class _ApercuPanierState extends State<ApercuPanier> {
+class _ApercuPanierState extends State<panierWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.black.withOpacity(0.6),
-
-      elevation: 0,
-      // margin: const EdgeInsets.all(10),
-      // decoration: BoxDecoration(
-      //     borderRadius: const BorderRadius.all(Radius.circular(10)),
-      //     border: Border.all(width: 1, color: Colors.grey.withOpacity(0.4))),
+      elevation: 1,
       child: Padding(
         padding: const EdgeInsets.all(5),
         child: Column(
@@ -58,25 +48,26 @@ class _ApercuPanierState extends State<ApercuPanier> {
                       Text(
                         widget.cartitem!.name!,
                         style:
-                            const TextStyle(fontSize: 17, color: Colors.white),
-                      ),
-                      Text(
-                        '${widget.cartitem!.price!.toStringAsFixed(0)}x${widget.cartitem!.quantity.toStringAsFixed(0)}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
+                            const TextStyle(fontSize: 17, color: Colors.black),
                       ),
                       const Text(
                         '5000 FCFA',
                         style: TextStyle(
-                          color: Colors.orange,
+                          color: Colors.red,
                         ),
                       ),
+                      Text(
+                        '${widget.cartitem!.price!.toStringAsFixed(0)}x${widget.cartitem!.quantity.toStringAsFixed(0)}',
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(widget.cartitem!.instruction!)
                     ],
                   ),
                   const Spacer(),
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
                         Expanded(
@@ -87,7 +78,7 @@ class _ApercuPanierState extends State<ApercuPanier> {
                             },
                             child: const Icon(
                               Icons.add,
-                              color: Colors.white,
+                              color: Colors.red,
                             ),
                           ),
                         ),
@@ -100,41 +91,16 @@ class _ApercuPanierState extends State<ApercuPanier> {
                             },
                             child: const Icon(
                               Icons.remove,
-                              color: Colors.white,
+                              color: Colors.red,
                             ),
                           ),
                         )
-                        // IconButton(
-                        //   icon: Icon(
-                        //     Icons.delete,
-                        //     size: MediaQuery.of(context).size.height * 0.036,
-                        //   ),
-                        //   onPressed: () {
-                        //     cartController.removeCartItem(widget.cartitem!);
-                        //   },
-                        // ),
-                        // IconButton(
-                        //   icon: Icon(
-                        //     Icons.delete,
-                        //     size: MediaQuery.of(context).size.height * 0.03,
-                        //   ),
-                        //   onPressed: () {
-                        //     cartController.removeCartItem(widget.cartitem!);
-                        //   },
-                        // ),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            // const Divider(
-            //   color: Colors.orange,
-            // ),
-            // Container(
-            //   margin: const EdgeInsets.only(bottom: 10),
-            //   child: TextFormField(decoration: InputDecoration(border: i ) ,),
-            // )
           ],
         ),
       ),

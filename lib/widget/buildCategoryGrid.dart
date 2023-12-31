@@ -1,19 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/rendering.dart';
 import 'package:shopapp/controllers.dart/appController.dart';
 import 'package:shopapp/models/StandarPublication.dart';
-import 'package:shopapp/pages/historiPage.dart';
-import 'package:shopapp/pages/home2.dart';
+import 'package:shopapp/pages/BoutiquePage.dart';
 import 'package:shopapp/pages/producDetails2.dart';
 import 'package:shopapp/pages/produitdetails3.dart';
 import 'package:shopapp/utility/Utility.dart';
 
 import '../models/productModels.dart';
+import '../pages/CategorieVendeur.dart';
 import '../pages/ComSheet.dart';
-import '../pages/ProducDetails.dart';
-import '../pages/histori.dart';
 
 class buildCategoryGrid extends StatefulWidget {
   final List<Produit> produits;
@@ -35,19 +32,6 @@ class buildCategoryGrid extends StatefulWidget {
 }
 
 class _YourWidgetState extends State<buildCategoryGrid> {
-  void _showGridViewDialog(List<Produit> produits, int initialIndex) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return GridViewDialog(
-          produits: produits,
-          initialIndex: initialIndex,
-          description: widget.publication!.description!,
-        );
-      },
-    );
-  }
-
   List<Produit>? produitsMelange;
   final PageController _pageController = PageController();
   int pageindex = 0;
@@ -65,6 +49,12 @@ class _YourWidgetState extends State<buildCategoryGrid> {
     final isSmallScreen = screenHeight <= 600;
 
     return GestureDetector(
+      // onLongPress: () {
+      //   FirebaseFirestore.instance
+      //       .collection('publications')
+      //       .doc(widget.publication!.id)
+      //       .delete();
+      // },
       onTap: () {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (BuildContext context) {
@@ -76,13 +66,13 @@ class _YourWidgetState extends State<buildCategoryGrid> {
       },
       child: Card(
         elevation: 0,
-        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        color: Colors.grey.withOpacity(0.2),
+        margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+        color: Colors.white,
         // color: Colors.orangeAccent.withOpacity(0.2),
         // elevation: 0,
         child: Padding(
           padding: EdgeInsets.only(
-              bottom: 8,
+              // bottom: 8,
               right: widget.title != '' ? 0 : 8,
               left: widget.title != '' ? 0 : 8),
           child: Column(
@@ -90,6 +80,7 @@ class _YourWidgetState extends State<buildCategoryGrid> {
               // Divider(),
               widget.publication == null
                   ? buildCategorySection(
+                      nombrearticle: widget.produits.length,
                       title: widget.title,
                     )
                   : buildCategorySection(
@@ -97,17 +88,19 @@ class _YourWidgetState extends State<buildCategoryGrid> {
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                // padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(5),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: widget.nombreArticles % 2 == 0
-                      ? (widget.nombreArticles == 2
-                          ? widget.nombreArticles
-                          : widget.nombreArticles ~/ 2)
-                      : (widget.nombreArticles == 1
-                          ? widget.nombreArticles
-                          : widget.nombreArticles == 3
+                  crossAxisCount: widget.produits.length < 8
+                      ? widget.nombreArticles % 2 == 0
+                          ? (widget.nombreArticles == 2
                               ? widget.nombreArticles
-                              : ((widget.nombreArticles + 1) ~/ 2)),
+                              : widget.nombreArticles ~/ 2)
+                          : (widget.nombreArticles == 1
+                              ? widget.nombreArticles
+                              : widget.nombreArticles == 3
+                                  ? widget.nombreArticles
+                                  : ((widget.nombreArticles + 1) ~/ 2))
+                      : 4,
                 ),
                 itemCount: produitsMelange!.length >= widget.nombreArticles
                     ? produitsMelange!.sublist(0, widget.nombreArticles).length
@@ -116,13 +109,24 @@ class _YourWidgetState extends State<buildCategoryGrid> {
                   return GestureDetector(
                     onTap: () {
                       widget.publication != null
-                          ? Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                              return DetailsPage3(
-                                produits: widget.produits,
-                                publication: widget.publication,
-                              );
-                            }))
+                          ? index == 7 &&
+                                  (widget.produits.length -
+                                          widget.nombreArticles) !=
+                                      0
+                              ? Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                  return DetailsPage3(
+                                    produits: widget.produits,
+                                    publication: widget.publication,
+                                  );
+                                }))
+                              : Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                  return DetailsPage2(
+                                    produit: widget.produits[index],
+                                    isFromCategorie: false,
+                                  );
+                                }))
                           // ? Navigator.of(context).push(MaterialPageRoute(
                           //     builder: (BuildContext context) {
                           //     return Historie(
@@ -136,65 +140,151 @@ class _YourWidgetState extends State<buildCategoryGrid> {
                           //   }))
                           // ? _showGridViewDialog(produitsMelange!, index)
                           : Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) {
-                                  // return ProductDetails2(
-                                  //   produits: produitsMelange,
-                                  //   produit: produitsMelange!.length >= 8
-                                  //       ? produitsMelange!.sublist(0, 8)[index]
-                                  //       : produitsMelange![index],
-                                  // );
-
-                                  return DetailsPage(
-                                    produit: produitsMelange!.length >= 8
-                                        ? produitsMelange!.sublist(0, 8)[index]
-                                        : produitsMelange![index],
-                                  ); // Utilisez le paramètre pour déterminer quelle page ouvrir
-                                },
-                              ),
+                              index != 7
+                                  ? MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                        return DetailsPage2(
+                                          produit: widget.produits[index],
+                                          isFromCategorie: false,
+                                        );
+                                      },
+                                    )
+                                  : MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                        return CategorieVendeur(
+                                          categorieSelected:
+                                              produitsMelange!.first.categorie,
+                                        );
+                                      },
+                                    ),
                             );
                     },
                     child: Card(
+                      margin: widget.publication != null &&
+                              widget.publication!.productIds!.length == 1
+                          ? const EdgeInsets.all(0)
+                          : const EdgeInsets.symmetric(
+                              horizontal: 2, vertical: 2),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       elevation: 0,
-                      color: Colors.grey,
+                      color: Colors.white,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(
-                          height: double.maxFinite,
-                          width: double.infinity,
-                          errorWidget: (context, url, error) {
-                            return Container(
-                              color: Colors.grey.withOpacity(0.2),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.orange,
-                                    ),
+                        child: Stack(
+                          children: [
+                            CachedNetworkImage(
+                              height: double.maxFinite,
+                              width: double.infinity,
+                              errorWidget: (context, url, error) {
+                                return Container(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            );
-                          },
-                          imageUrl:
-                              produitsMelange!.length >= widget.nombreArticles
+                                );
+                              },
+                              imageUrl: produitsMelange!.length >=
+                                      widget.nombreArticles
                                   ? produitsMelange!
                                       .sublist(0, widget.nombreArticles)[index]
                                       .images!
                                       .first
                                   : produitsMelange![index].images!.first,
-                          fit: BoxFit.cover,
+                              fit: BoxFit.cover,
+                            ),
+                            Container(
+                              color: index == 7 &&
+                                      (widget.produits.length -
+                                              widget.nombreArticles) !=
+                                          0
+                                  ? Colors.black.withOpacity(0.6)
+                                  : Colors.transparent,
+                              child: Center(
+                                child: index == 7 &&
+                                        (widget.produits.length -
+                                                widget.nombreArticles) !=
+                                            0
+                                    ? Text(
+                                        widget.publication == null
+                                            ? '+${widget.produits.length - widget.nombreArticles + 1}'
+                                            : '+${widget.publication!.productIds!.length - 7}',
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      )
+                                    : const SizedBox(),
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     ),
                   );
                 },
               ),
+              Row(
+                children: [
+                  Stack(
+                    children: [
+                      IconButton(
+                          // Use the EvaIcons class for the IconData
+                          icon: const Icon(EvaIcons.heartOutline),
+                          onPressed: () {
+                            print("Eva Icon heart Pressed");
+                          }),
+                      const Positioned(
+                        bottom: 10,
+                        right: 0,
+                        child: Text(
+                          '+300',
+                          style: TextStyle(color: Colors.grey, fontSize: 10),
+                        ),
+                      )
+                    ],
+                  ),
+                  Stack(
+                    children: [
+                      IconButton(
+                          // Use the EvaIcons class for the IconData
+                          icon: const Icon(EvaIcons.messageCircleOutline),
+                          onPressed: () {
+                            showProductBottomSheet(
+                              context,
+                            );
+                            print("Eva Icon heart Pressed");
+                          }),
+                      const Positioned(
+                        bottom: 10,
+                        right: 0,
+                        child: Text(
+                          '+40',
+                          style: TextStyle(color: Colors.grey, fontSize: 10),
+                        ),
+                      )
+                    ],
+                  ),
+                  IconButton(
+                      // Use the EvaIcons class for the IconData
+                      icon: const Icon(EvaIcons.shareOutline),
+                      onPressed: () {
+                        print("Eva Icon heart Pressed");
+                      }),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text('aimés par Tif et 12 autres..'),
+                  ),
+                ],
+              )
             ],
           ),
         ),
@@ -203,7 +293,7 @@ class _YourWidgetState extends State<buildCategoryGrid> {
   }
 
   Widget buildCategorySection(
-      {String? title, PublicationStandard? publication}) {
+      {String? title, PublicationStandard? publication, int? nombrearticle}) {
     return Container(
       // margin: const EdgeInsets.only(top: 5),
       // padding: const EdgeInsets.only(left: 7),
@@ -227,47 +317,34 @@ class _YourWidgetState extends State<buildCategoryGrid> {
                   onPressed: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return home();
+                      return BoutiquePage();
                     }));
                   },
                   child: const Text(
                     'Sana\'s market',
-                    style: TextStyle(color: Colors.orange, fontSize: 15),
+                    style: TextStyle(color: Colors.red, fontSize: 15),
                   ),
                 ),
                 const Spacer(),
-                // const Icon(
-                //   Icons.favorite_border,
-                //   color: Colors.orange,
-                // ),
-                // const SizedBox(
-                //   width: 5,
-                // ),
-                // IconButton(
-                //     onPressed: () {
-                //       showProductCommentsBottomSheet(context, 'Nom du produit');
-                //     },
-                //     icon: const Icon(
-                //       Icons.mode_comment_outlined,
-                //       color: Colors.orange,
-                //     ))
+                if (publication != null)
+                  Text(
+                    '${Utilities.getDayName(publication.date!.weekday)} le ${publication.date!.day} ${Utilities.getMonthName(publication.date!.month)} à ${publication.date!.hour}h ${publication.date!.minute}',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
               ],
             ),
-          // SizedBox(
-          //   height: 5,
-          // ),
+
           if (title != '')
-            Container(
-              // margin: const EdgeInsets.only(top: 7),
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              color: Colors.grey.withOpacity(0.4),
+            Card(
+              elevation: 0,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     title!,
                     style: const TextStyle(
-                        color: Colors.black,
+                        color: Colors.red,
                         fontSize: 17,
                         fontWeight: FontWeight.bold),
                   ),
@@ -275,305 +352,17 @@ class _YourWidgetState extends State<buildCategoryGrid> {
               ),
             ),
           // ignore: unnecessary_null_comparison
-          if (publication != null)
+          if (publication != null && publication.description != '')
             Text(
               publication.description!,
               style: const TextStyle(color: Colors.black, fontSize: 16),
             ),
-          if (publication != null)
-            Text(
-              '${Utilities.getDayName(publication.date!.weekday)} le ${publication.date!.day} ${Utilities.getMonthName(publication.date!.month)} à ${publication.date!.hour}h ${publication.date!.minute}',
-              style: const TextStyle(
-                color: Colors.grey,
-              ),
-            ),
+
           const SizedBox(
             height: 5,
           )
         ],
       ),
     );
-  }
-}
-
-class GridViewDialog extends StatefulWidget {
-  final List<Produit> produits;
-  final int initialIndex;
-  String? description;
-  GridViewDialog(
-      {required this.produits, required this.initialIndex, this.description});
-
-  @override
-  _GridViewDialogState createState() => _GridViewDialogState();
-}
-
-class _GridViewDialogState extends State<GridViewDialog> {
-  late PageController _pageController;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(initialPage: widget.initialIndex);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        // margin: const EdgeInsets.symmetric(vertical: 10),
-        height: MediaQuery.of(context).size.height /
-            1.7, // Ajustez la hauteur selon vos besoins
-        // width: 300, // Ajustez la largeur selon vos besoins
-        child: Expanded(
-          child: PageView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: _pageController,
-            itemCount: widget.produits.length,
-            itemBuilder: (context, index) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    YourGridViewItemWidget(
-                      index: index,
-                      produits: widget.produits,
-                      pageController: _pageController,
-                      description: widget.description!,
-                      produit: widget.produits[index],
-                      onMiniatureTap: () {
-                        _pageController.jumpToPage(index);
-                      },
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class YourGridViewItemWidget extends StatefulWidget {
-  final Produit produit;
-  final VoidCallback onMiniatureTap;
-  String? description;
-  PageController? pageController;
-  int? index;
-  List<Produit>? produits;
-
-  YourGridViewItemWidget(
-      {required this.produit,
-      this.produits,
-      required this.onMiniatureTap,
-      this.description,
-      this.index,
-      this.pageController});
-
-  @override
-  State<YourGridViewItemWidget> createState() => _YourGridViewItemWidgetState();
-}
-
-class _YourGridViewItemWidgetState extends State<YourGridViewItemWidget> {
-  int quantity = 1;
-  @override
-  Widget build(BuildContext context) {
-    bool isAdd = authController.usermodel.value.cartList!
-        .any((element) => element.productId == widget.produit.id);
-
-    return Container(
-        // padding: EdgeInsets.all(10),
-        // height: MediaQuery.of(context).size.height / 2,
-        // Widget pour représenter les éléments de la PageView
-        // Utilisez les détails de produit pour personnaliser cette partie
-        child: Column(
-      children: [
-        Row(
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(360)),
-              child: CachedNetworkImage(
-                  height: 20,
-                  width: 20,
-                  imageUrl:
-                      repositoryController.allproduits.first.images!.first),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return home();
-                }));
-              },
-              child: const Text(
-                'Sana\'s market',
-                style: TextStyle(color: Colors.orange, fontSize: 15),
-              ),
-            ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 5),
-          child: Row(
-            children: [
-              Text(
-                widget.produit.categorie!,
-                style: const TextStyle(color: Colors.orange, fontSize: 17),
-              ),
-              const Spacer(),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return DetailsPage(
-                      produit: widget.produit,
-                    );
-                  }));
-                },
-                child: const Text('Plus d\'articles..'),
-              )
-            ],
-          ),
-        ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height / 3.2,
-          child: Stack(
-            children: [
-              CachedNetworkImage(
-                fit: BoxFit.fill,
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height / 3.2,
-                imageUrl: widget.produit.images!.first,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Row(
-                        children: [
-                          if (widget.index != 0)
-                            GestureDetector(
-                              onTap: () {
-                                widget.pageController!
-                                    .jumpToPage(widget.index! - 1);
-                              },
-                              child: Container(
-                                  padding: const EdgeInsets.all(3),
-                                  decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(60))),
-                                  child: const Icon(
-                                    Icons.arrow_back_ios_new,
-                                    color: Colors.orange,
-                                    size: 25,
-                                  )),
-                            ),
-                          const Spacer(),
-                          if (widget.index != widget.produits!.length - 1)
-                            GestureDetector(
-                              onTap: () {
-                                widget.pageController!
-                                    .jumpToPage(widget.index! + 1);
-                              },
-                              child: Container(
-                                  padding: const EdgeInsets.all(3),
-                                  decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(60))),
-                                  child: const Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: Colors.orange,
-                                    size: 25,
-                                  )),
-                            )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.all(5),
-          child: Row(
-            children: [
-              const Text(
-                '5000 FCFA',
-                style: TextStyle(color: Colors.orange, fontSize: 16),
-              ),
-              const Spacer(),
-              IconButton(
-                  onPressed: () {
-                    if (quantity > 1) {
-                      setState(() {
-                        quantity--;
-                      });
-                    }
-                  },
-                  icon: const Icon(
-                    Icons.remove,
-                  )),
-              Text(
-                quantity.toString(),
-                style: const TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      quantity++;
-                    });
-                  },
-                  icon: const Icon(
-                    Icons.add,
-                  ))
-              // IconButton(
-              //     onPressed: () {},
-              //     icon: const Icon(
-              //       Icons.favorite_border,
-              //       color: Colors.orange,
-              //     )),
-              // IconButton(
-              //     onPressed: () {},
-              //     icon: const Icon(
-              //       Icons.messenger_outline,
-              //       color: Colors.orange,
-              //     ))
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: Text(widget.produit.description ?? widget.description!),
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: isAdd ? Colors.grey : Colors.orange,
-          ),
-          onPressed: () {
-            // Navigator.of(context).pop();
-            isAdd
-                ? null
-                : cartController
-                    .addProductToCart([widget.produit], context, quantity);
-          },
-          child: isAdd
-              ? const Text(
-                  'Déja au panier',
-                )
-              : const Text(
-                  'Ajouter au panier',
-                ),
-        )
-      ],
-    ));
   }
 }

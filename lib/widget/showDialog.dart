@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../models/productModels.dart';
-import '../pages/publication.dart';
+import '../pages/publicationPage.dart';
 
 // import '../Productmodels.dart';
 

@@ -6,7 +6,7 @@ class CartItemModel {
   static const COST = "cost";
   static const PRICE = "price";
   static const PRODUCT_ID = "productId";
-
+  String? instruction;
   String? id;
   String? image;
   String? name;
@@ -17,6 +17,7 @@ class CartItemModel {
 
   CartItemModel({
     this.productId,
+    this.instruction,
     this.id,
     this.image,
     this.name,
@@ -32,6 +33,7 @@ class CartItemModel {
     cost = data[COST].toDouble();
     productId = data[PRODUCT_ID];
     price = data[PRICE].toDouble();
+    instruction = data['instruction'];
   }
 
   Map toJson() => {
@@ -41,6 +43,7 @@ class CartItemModel {
         NAME: name,
         QUANTITY: quantity,
         COST: price!.toDouble() * quantity,
-        PRICE: price
+        PRICE: price,
+        'instruction': instruction
       };
 }

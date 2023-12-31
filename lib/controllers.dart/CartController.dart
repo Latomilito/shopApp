@@ -18,8 +18,8 @@ class CartController extends GetxController {
     ever(authController.usermodel, changeCartTotalPrice);
   }
 
-  void addProductToCart(
-      List<Produit> produits, BuildContext context, int quantity) {
+  void addProductToCart(List<Produit> produits, BuildContext context,
+      int quantity, String instruction) {
     try {
       for (var i = 0; i < produits.length; i++) {
         if (_isItemAlreadyAdded(produits[i])) {
@@ -36,7 +36,8 @@ class CartController extends GetxController {
                     : produits[i].nom,
                 "quantity": quantity,
                 "price": produits[i].prix,
-                "cost": produits[i].prix
+                "cost": produits[i].prix! * quantity,
+                "instruction": instruction
               }
             ])
           });
@@ -44,8 +45,16 @@ class CartController extends GetxController {
       }
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          backgroundColor: Colors.orange,
-          content: Text('Produits ajoutés au panier'),
+          showCloseIcon: true,
+          shape: BeveledRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          // backgroundColor: Colors.red,
+          content: Text(
+            'Produits ajoutés au panier',
+            style: TextStyle(
+                // color: Colors.white,
+                ),
+          ),
         ),
       );
     } catch (e) {
@@ -79,31 +88,6 @@ class CartController extends GetxController {
           .where((item) => item.productId == product.id)
           .isNotEmpty;
 
-  // void decreaseQuantity(CartItemModel item) {
-  //   if (item.quantity == 1) {
-  //     removeCartItem(item);
-  //     authController.initialiseUserModel();
-  //   } else {
-  //     removeCartItem(item);
-  //     authController.initialiseUserModel();
-  //     item.quantity--;
-  //     authController.updateUserData({
-  //       "cartList": FieldValue.arrayUnion([item.toJson()])
-  //     });
-  //   }
-  // }
-
-  // void increaseQuantity(CartItemModel item) {
-  //   removeCartItem(item);
-  //   item.quantity++;
-  //   // logger.i({"quantity": item.quantity});
-  //   authController.updateUserData({
-  //     "cartList": FieldValue.arrayUnion([item.toJson()])
-  //   });
-  // }
-
-  ///
-  ///
   void decreaseQuantity(CartItemModel item) {
     // Récupérer la liste actuelle
     List<CartItemModel>? cartList = authController.usermodel.value.cartList;
@@ -123,6 +107,7 @@ class CartController extends GetxController {
 
       // Mettre à jour dans Firestore
       authController.updateUserData({"cartList": cartList});
+      // changeCartTotalPrice(authController.usermodel.value);
     }
   }
 
@@ -140,6 +125,7 @@ class CartController extends GetxController {
 
       // Mettre à jour dans Firestore
       authController.updateUserData({"cartList": cartList});
+      // changeCartTotalPrice(authController.usermodel.value);
     }
   }
 }

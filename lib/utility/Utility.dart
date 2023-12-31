@@ -1,7 +1,5 @@
 import 'dart:io';
 // import 'package:intl/intl.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -125,42 +123,4 @@ class Utilities {
       return;
     }
   }
-
-//   Future<void> demanderPermissionContacts() async {
-//     final PermissionStatus status = await Permission.contacts.request();
-
-//     if (status.isGranted) {
-//       // Get.offAll(() => ContactsPage());
-//     } else {}
-//   }
-
-//   Future<void> demanderPermissionLocalisation() async {
-//     final PermissionStatus status = await Permission.location.request();
-
-//     if (status.isGranted) {
-//       // L'autorisation d'accéder à la localisation a été accordée
-//     } else {
-//       // L'utilisateur a refusé l'autorisation d'accéder à la localisation
-//     }
-//   }
-// }
-
-// class optionWidget extends StatelessWidget {
-//   optionWidget({
-//     this.icon,
-//     this.text,
-//     this.onPressed,
-//     super.key,
-//   });
-//   IconData? icon;
-//   String? text;
-//   final VoidCallback? onPressed;
-//   @override
-//   Widget build(BuildContext context) {
-//     return SimpleDialogOption(
-//       onPressed: onPressed,
-//       child: Text(text!),
-//     );
-//   }
-// }
 }

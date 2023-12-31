@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:shopapp/models/productModels.dart';
 
+// ignore: must_be_immutable
 class SliderPromotion extends StatefulWidget {
   List<String> images;
 
@@ -48,72 +46,78 @@ class _SliderProductState extends State<SliderPromotion> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 4.5,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                widget.images.length != 1
-                    ? PageView.builder(
-                        controller: _pageController,
-                        onPageChanged: (page) {
-                          setState(() {
-                            _currentPage = page;
-                          });
-                        },
-                        itemCount: widget.images.length,
-                        itemBuilder: (buildContext, index) {
-                          // return CachedNetworkImage(
-                          //   imageUrl: widget.images[index],
-                          //   fit: BoxFit.fill,
-                          // );
-                          return Image.asset(
-                            widget.images[index],
+    return Padding(
+      padding: const EdgeInsets.all(5),
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height / 5.5,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  widget.images.length != 1
+                      ? PageView.builder(
+                          controller: _pageController,
+                          onPageChanged: (page) {
+                            setState(() {
+                              _currentPage = page;
+                            });
+                          },
+                          itemCount: widget.images.length,
+                          itemBuilder: (buildContext, index) {
+                            // return CachedNetworkImage(
+                            //   imageUrl: widget.images[index],
+                            //   fit: BoxFit.fill,
+                            // );
+                            return ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(0)),
+                              child: Image.asset(
+                                widget.images[index],
+                                fit: BoxFit.fill,
+                              ),
+                            );
+                          },
+                        )
+                      : ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(0)),
+                          child: Image.asset(
+                            widget.images[0],
                             fit: BoxFit.fill,
-                          );
-                        },
-                      )
-                    : Image.asset(
-                        widget.images[0],
-                        fit: BoxFit.fill,
+                          ),
+                        ),
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 10,
                       ),
-                // : CachedNetworkImage(
-                //     imageUrl: widget.images[0],
-                //     fit: BoxFit.fill,
-                //     width: double.infinity,
-                //   ),
-                Column(
-                  children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Spacer(),
-                    widget.images.length != 1
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(
-                              widget.images.length,
-                              (index) => Padding(
-                                padding: const EdgeInsets.all(5),
-                                child: CircleAvatar(
-                                  backgroundColor: _currentPage == index
-                                      ? Colors.orange
-                                      : Colors.grey,
-                                  maxRadius: 5,
+                      const Spacer(),
+                      widget.images.length != 1
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(
+                                widget.images.length,
+                                (index) => Padding(
+                                  padding: const EdgeInsets.all(5),
+                                  child: CircleAvatar(
+                                    backgroundColor: _currentPage == index
+                                        ? Colors.red
+                                        : Colors.grey,
+                                    maxRadius: 5,
+                                  ),
                                 ),
                               ),
-                            ),
-                          )
-                        : const SizedBox()
-                  ],
-                ),
-              ],
+                            )
+                          : const SizedBox()
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

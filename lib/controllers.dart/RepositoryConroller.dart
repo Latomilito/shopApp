@@ -7,11 +7,9 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shopapp/main.dart';
 import 'package:shopapp/models/StandarPublication.dart';
 import 'package:shopapp/models/productModels.dart';
-import 'package:shopapp/pages/historiquePage.dart';
 
 import '../models/userModel.dart';
 import '../models/categorieModel.dart';
-import '../pages/home1.dart';
 
 class RepositoryController extends GetxController {
   Rx<Usermodel> userselected = Usermodel().obs;
@@ -59,7 +57,7 @@ class RepositoryController extends GetxController {
         'categorie': produit.categorie,
         'estPopulaire': produit.estPopulaire,
         'estNouveau': produit.estNouveau,
-      }).whenComplete(() => Get.back());
+      });
     } catch (e) {
       Get.back();
       Alert(
@@ -95,7 +93,7 @@ class RepositoryController extends GetxController {
         'productIds': publication.productIds,
         'description': publication.description,
         'datee': publication.datee
-      }).whenComplete(() => Get.back());
+      });
     } catch (e) {
       Get.back();
       Alert(

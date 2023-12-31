@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shopapp/authentification/loginPage.dart';
+import 'package:shopapp/controllers.dart/appController.dart';
 import 'package:shopapp/main.dart';
+import 'package:shopapp/models/productModels.dart';
 import 'package:shopapp/models/userModel.dart';
-import 'package:shopapp/pages/homePage.dart';
 
-import '../pages/home1.dart';
+import '../models/StandarPublication.dart';
+import '../pages/Botomnavigationbor.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
@@ -21,6 +23,7 @@ class AuthController extends GetxController {
   TextEditingController password = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController email = TextEditingController();
+
   @override
   void onReady() {
     super.onReady();
@@ -31,6 +34,10 @@ class AuthController extends GetxController {
     ever(firebaseUser, setInitialScreen);
     // usermodel.bindStream(initialiseUserModel());
     firebaseUser.bindStream(auth.userChanges().cast());
+    repositoryController.allproduits
+        .bindStream(repositoryController.allproduct());
+    repositoryController.allpublications
+        .bindStream(repositoryController.allpublication());
   }
 
   setInitialScreen(User? user) async {
@@ -39,7 +46,7 @@ class AuthController extends GetxController {
     } else {
       usermodel.bindStream(initialiseUserModel());
       // await Future.delayed(const Duration(seconds: 1));
-      Get.offAll(() => const AccueilPage());
+      Get.offAll(() => const BottomnavigationPage());
     }
   }
 

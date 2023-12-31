@@ -1,23 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopapp/pages/ProducDetails.dart';
 import 'package:shopapp/pages/producDetails2.dart';
-
 import '../controllers.dart/appController.dart';
 import '../models/StandarPublication.dart';
 import '../models/productModels.dart';
 import '../utility/Utility.dart';
 import 'ComSheet.dart';
-import 'home2.dart';
+import 'BoutiquePage.dart';
 
-class Historie extends StatefulWidget {
+class StatusPage extends StatefulWidget {
   PageController? pageController;
   List<Produit>? produit;
   bool? isStory;
   int? index1;
   List<PublicationStandard>? publications;
-  Historie(
+  StatusPage(
       {super.key,
       this.produit,
       this.publications,
@@ -26,10 +24,10 @@ class Historie extends StatefulWidget {
       this.pageController});
 
   @override
-  State<Historie> createState() => _HistorieState();
+  State<StatusPage> createState() => _HistorieState();
 }
 
-class _HistorieState extends State<Historie> {
+class _HistorieState extends State<StatusPage> {
   int selectedindex = 0;
   @override
   void initState() {
@@ -42,10 +40,6 @@ class _HistorieState extends State<Historie> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          // bottomNavigationBar: ProductCommentsBottomSheet(
-          //   produit: widget.produit![selectedindex],
-          // ),
-          // bottomSheet:
           body: PageView.builder(
               onPageChanged: (value) {
                 setState(() {
@@ -109,7 +103,7 @@ class _HistorieState extends State<Historie> {
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (BuildContext context) {
-                                    return home();
+                                    return BoutiquePage();
                                   }));
                                 },
                                 child: const Text(
@@ -127,7 +121,6 @@ class _HistorieState extends State<Historie> {
                               ),
                             ],
                           ),
-
                           Expanded(
                               child: SingleChildScrollView(
                                   child: Column(
@@ -163,12 +156,7 @@ class _HistorieState extends State<Historie> {
                                             children: [
                                               Expanded(
                                                   child: GestureDetector(
-                                                      // onVerticalDragEnd: (details) {
-                                                      //   showProductStoriBottomSheet(
-                                                      //       context, widget.produit!, index);
-                                                      // },
                                                       onTap: () {
-                                                        // Navigator.of(context).pop();
                                                         index != 0
                                                             ? widget
                                                                 .pageController!
@@ -182,10 +170,6 @@ class _HistorieState extends State<Historie> {
                                                       ))),
                                               Expanded(
                                                   child: GestureDetector(
-                                                      // onVerticalDragEnd: (details) {
-                                                      //   showProductStoriBottomSheet(
-                                                      //       context, widget.produit!, index);
-                                                      // },
                                                       onTap: () {
                                                         index !=
                                                                 widget.produit!
@@ -295,12 +279,7 @@ class _HistorieState extends State<Historie> {
                                                       MaterialPageRoute(builder:
                                                           (BuildContext
                                                               context) {
-                                                    return DetailsPage(
-                                                      categorieCherche: widget
-                                                          .produit![index]
-                                                          .categorie,
-                                                      quantity: 1,
-                                                    );
+                                                    return DetailsPage2();
                                                   }));
                                                 },
                                                 child: const Text('voir plus'),
@@ -341,7 +320,7 @@ class _HistorieState extends State<Historie> {
                                                           (BuildContext
                                                               context) {
                                                     return DetailsPage2(
-                                                      isProduiCherche: false,
+                                                      isFromCategorie: false,
                                                       produit: element,
                                                       // publication: publication,
                                                     );
@@ -376,25 +355,7 @@ class _HistorieState extends State<Historie> {
                                 ),
                               )
                             ],
-                          ))) // ProductCommentsBottomSheet(
-                          //   produit: widget.produit![selectedindex],
-                          // ),
-                          // const Spacer(),
-                          // const Column(
-                          //   children: [
-                          //     RotatedBox(
-                          //         quarterTurns: 1,
-                          //         child: Icon(
-                          //             Icons.arrow_back_ios_new_rounded)),
-                          //     SizedBox(
-                          //       height: 5,
-                          //     ),
-                          //     Text('Tirez'),
-                          //     SizedBox(
-                          //       height: 10,
-                          //     ),
-                          //   ],
-                          // ),
+                          )))
                         ]));
               })),
     );

@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'CartItemModel.dart';
 
 class Usermodel {
-  DateTime date = DateTime.now();
   String? id;
   String? nom;
   String? email;
@@ -11,11 +10,10 @@ class Usermodel {
   String? imageBoutique;
   String? descriptionBoutique;
   String? number;
-  List<CartItemModel>? cartList; // Liste des ID des produits favoris
+  List<CartItemModel>? cartList;
 
   Usermodel(
       {this.id,
-      this.date,
       this.nom,
       this.email,
       this.passwords,

@@ -44,36 +44,54 @@ class _HistoriquePageState extends State<HistoriquePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: const Text(
-          'Historique',
-          style: TextStyle(
-            color: Colors.orange,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          title: const Text(
+            'Historique',
+            style: TextStyle(
+              color: Colors.grey,
+            ),
           ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: orders.length,
-          itemBuilder: (context, index) {
-            final order = orders[index];
-            return Card(
-              color: Colors.grey.withOpacity(0.2),
-              elevation: 0,
-              child: ListTile(
-                title: Text('Commande #${order.orderId}'),
-                subtitle: Text('Date: ${order.orderDate.toString()}'),
-                trailing: const Icon(Icons.more_vert),
-                onTap: () {
-                  _showOrderDetails(order);
-                },
-              ),
-            );
-          },
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+            itemCount: orders.length,
+            itemBuilder: (context, index) {
+              final order = orders[index];
+              return Card(
+                color: Colors.white,
+                elevation: 2,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 5,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              topLeft: Radius.circular(10))),
+                    ),
+                    ListTile(
+                      title: Text('Commande #${order.orderId}'),
+                      subtitle: Text('Date: ${order.orderDate.toString()}'),
+                      trailing: const Icon(
+                        Icons.more_vert,
+                        color: Colors.red,
+                      ),
+                      onTap: () {
+                        _showOrderDetails(order);
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

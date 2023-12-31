@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shopapp/pages/AddPromotion.dart';
-import 'package:shopapp/pages/publication.dart';
+import 'package:shopapp/pages/promotionPage.dart';
+import 'package:shopapp/pages/publicationPage.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -20,15 +20,14 @@ class _DashboardPageState extends State<DashboardPage> {
         onpressed: () {},
       ),
       StatisticCard(
-        title: 'Offres spéciale',
-        icon: Icons.panorama_wide_angle_outlined,
-        onpressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (BuildContext context) {
-            return AjouterPromotionPage();
-          }));
-        },
-      ),
+          title: 'Offres spéciale',
+          icon: Icons.panorama_wide_angle_outlined,
+          onpressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (BuildContext context) {
+              return OfferPublishScreen();
+            }));
+          }),
       StatisticCard(
         title: 'Clients',
         icon: Icons.person,
@@ -117,7 +116,8 @@ class StatisticCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onpressed;
-  StatisticCard({
+  const StatisticCard({
+    super.key,
     required this.title,
     required this.icon,
     required this.onpressed,
@@ -266,23 +266,9 @@ class OrderDetailsDialog extends StatelessWidget {
         children: [
           Text('Date de Commande: ${order['date']}'),
           Text('Nom du Client: ${order['client']}'),
-          SizedBox(height: 16),
-          Text('Éléments de la Commande:'),
-          // SizedBox(
-          //   height: 200,
-          //   child: ListView.builder(
-          //     shrinkWrap: true,
-          //     itemCount: 1,
-          //     itemBuilder: (BuildContext context, int index) {
-          //       // Construisez ici chaque élément de la liste
-          //       return const ListTile(
-          //         title: Text('non'),
-          //         subtitle: Text('Prix'),
-          //       );
-          //     },
-          //   ),
-          // ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
+          const Text('Éléments de la Commande:'),
+          const SizedBox(height: 16),
           Text('Montant Total: ${order['total']}'),
         ],
       ),
