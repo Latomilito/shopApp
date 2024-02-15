@@ -3,7 +3,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shopapp/models/StandarPublication.dart';
 import 'package:shopapp/models/productModels.dart';
+import 'package:shopapp/pages/PublicationPage2.dart';
+import 'package:shopapp/pages/RecherchePage.dart';
 import 'package:shopapp/pages/commandeInfo.dart';
+import 'package:shopapp/pages/favoritePage.dart';
 import '../controllers.dart/appController.dart';
 import '../widget/buildCategoryGrid.dart';
 import '../widget/promotionSlider.dart';
@@ -18,6 +21,7 @@ class AcceuilPage extends StatefulWidget {
 }
 
 class _Home5State extends State<AcceuilPage> {
+  FocusNode _focusNode = FocusNode();
   void onCategorySelected(String category) {
     List<Produit> produis = repositoryController.allproduits
         .where((element) => element.categorie == category)
@@ -54,7 +58,7 @@ class _Home5State extends State<AcceuilPage> {
           title: const Text(
             'Soft Store',
             style: TextStyle(
-              color: Colors.red,
+              color: Colors.black,
             ),
           ),
           actions: [
@@ -67,7 +71,7 @@ class _Home5State extends State<AcceuilPage> {
               },
               icon: const Icon(
                 Icons.shopping_bag,
-                color: Colors.red,
+                color: Colors.black,
               ),
             ),
           ],
@@ -76,12 +80,24 @@ class _Home5State extends State<AcceuilPage> {
           child: ListView(
             children: [
               ListTile(
-                title: const Text('Ajouter des Produits'),
-                onTap: () {},
+                title: const Text('Mes favoris'),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) {
+                      return const FavoritePage();
+                    },
+                  ));
+                },
               ),
               ListTile(
                 title: const Text('Faire une annonce'),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) {
+                      return const PublicationPage2();
+                    },
+                  ));
+                },
               ),
               ListTile(
                 title: const Text('Faire une offre'),
@@ -96,8 +112,68 @@ class _Home5State extends State<AcceuilPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      elevation: 0,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: ClipRRect(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        child: TextField(
+                          focusNode: _focusNode,
+                          onTap: () {
+                            _focusNode.unfocus();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return RecherchePage();
+                            }));
+                          },
+                          onChanged: (query) {
+                            setState(() {
+                              // filterQuery = query;
+                              // categorieSelected = null;
+                              // selectedindex = null;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            fillColor: Colors.grey.withOpacity(0.2),
+                            filled: true,
+                            hintText:
+                                'Rechercher une catégorie ou un nom de produit',
+                            border: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.transparent,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // ElevatedButton(
+                  //     style: ElevatedButton.styleFrom(
+                  //         elevation: 0,
+                  //         backgroundColor: Colors.white,
+                  //         padding: const EdgeInsets.all(10),
+                  //         shape: const CircleBorder()),
+                  //     onPressed: () {},
+                  //     child: const Icon(
+                  //       Icons.filter_list,
+                  //       color: Colors.red,
+                  //     ))
+                ],
+              ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 8, right: 8, left: 8),
+                padding: const EdgeInsets.only(bottom: 0, right: 8, left: 8),
                 child: SliderPromotion(
                   images: images,
                 ),
@@ -138,11 +214,14 @@ class _Home5State extends State<AcceuilPage> {
                           child: Stack(
                             children: [
                               Container(
+                                decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10))),
                                 margin: const EdgeInsets.symmetric(
                                     vertical: 3, horizontal: 3),
                                 child: ClipRRect(
                                   borderRadius: const BorderRadius.all(
-                                      Radius.circular(0)),
+                                      Radius.circular(10)),
                                   child: CachedNetworkImage(
                                     height: MediaQuery.of(context).size.height *
                                         0.08,
@@ -163,7 +242,7 @@ class _Home5State extends State<AcceuilPage> {
                                     MediaQuery.of(context).size.height * 0.08,
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(
-                                      Radius.circular(0)),
+                                      Radius.circular(10)),
                                   color: Colors.black.withOpacity(0.6),
                                 ),
                                 child: Text(

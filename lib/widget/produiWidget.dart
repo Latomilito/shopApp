@@ -28,83 +28,97 @@ class _ProduitWidgetState extends State<ProduitWidget> {
           );
         }));
       },
-      child: Container(
-        height: MediaQuery.of(context).size.height / 3.5,
-        width: MediaQuery.of(context).size.width / 2.1,
-        margin: const EdgeInsets.all(2),
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Expanded(
-                  child: CachedNetworkImage(
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    imageUrl: widget.produit!.images!.first,
+      child: Card(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        margin: const EdgeInsets.all(3),
+        child: SizedBox(
+          // decoration: const BoxDecoration(
+          //     // color: Colors.grey.withOpacity(0.3),
+          //     borderRadius: const BorderRadius.all(Radius.circular(10))),
+          height: MediaQuery.of(context).size.height / 3.5,
+          width: MediaQuery.of(context).size.width / 2.3,
+          // margin: const EdgeInsets.all(3),
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)),
+                      child: CachedNetworkImage(
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        imageUrl: widget.produit!.images!.first,
+                      ),
+                    ),
                   ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
 
-                  // height: 50,
-                  width: MediaQuery.of(context).size.width / 2.1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.produit!.nom == ''
-                            ? widget.produit!.categorie!
-                            : widget.produit!.nom!,
-                        style: const TextStyle(
-                          color: Colors.black,
+                    // height: 50,
+                    width: MediaQuery.of(context).size.width / 2.1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.produit!.nom == ''
+                              ? widget.produit!.categorie!
+                              : widget.produit!.nom!,
+                          style: const TextStyle(
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                      Text(
-                        widget.produit!.prix!.toInt().toString(),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red,
+                        Text(
+                          widget.produit!.prix!.toInt().toString(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
                         ),
-                      ),
-                      const Text(
-                        'Sana\'s market',
-                        style: TextStyle(
-                          color: Colors.grey,
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Positioned(
-                top: 1,
-                right: -1,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white.withOpacity(0.8),
-                        shape: const CircleBorder()),
-                    onPressed: () {
-                      favoris
+                        const Text(
+                          'Sana\'s market',
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Positioned(
+                  top: 1,
+                  right: -1,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white.withOpacity(0.8),
+                          shape: const CircleBorder()),
+                      onPressed: () {
+                        favoris
+                                .where(
+                                    (element) => element == widget.produit!.id)
+                                .isEmpty
+                            ? favoris.add(widget.produit!.id)
+                            : favoris.remove(widget.produit!.id);
+                        setState(() {});
+                      },
+                      child: favoris
                               .where((element) => element == widget.produit!.id)
                               .isEmpty
-                          ? favoris.add(widget.produit!.id)
-                          : favoris.remove(widget.produit!.id);
-                      setState(() {});
-                    },
-                    child: favoris
-                            .where((element) => element == widget.produit!.id)
-                            .isEmpty
-                        ? const Icon(
-                            Icons.favorite_border,
-                            color: Colors.red,
-                          )
-                        : const Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                          )))
-          ],
+                          ? const Icon(
+                              Icons.favorite_border,
+                              color: Colors.black,
+                            )
+                          : const Icon(
+                              Icons.favorite,
+                              color: Colors.black,
+                            )))
+            ],
+          ),
         ),
       ),
     );

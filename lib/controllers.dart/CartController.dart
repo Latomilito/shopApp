@@ -100,11 +100,14 @@ class CartController extends GetxController {
       if (item.quantity == 1) {
         cartList.removeAt(index);
         removeCartItem(item);
+
+        // authController.updateUserData({"cartList": cartList});
       } else {
         item.quantity--;
         cartList[index].quantity = item.quantity;
+        // authController.updateUserData({"cartList": cartList});
       }
-
+      changeCartTotalPrice(authController.usermodel.value);
       // Mettre à jour dans Firestore
       authController.updateUserData({"cartList": cartList});
       // changeCartTotalPrice(authController.usermodel.value);

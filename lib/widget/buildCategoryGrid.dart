@@ -67,7 +67,7 @@ class _YourWidgetState extends State<buildCategoryGrid> {
       child: Card(
         elevation: 0,
         margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-        color: Colors.white,
+        color: Colors.black.withOpacity(0.05),
         // color: Colors.orangeAccent.withOpacity(0.2),
         // elevation: 0,
         child: Padding(
@@ -281,7 +281,10 @@ class _YourWidgetState extends State<buildCategoryGrid> {
                   const Spacer(),
                   TextButton(
                     onPressed: () {},
-                    child: const Text('aimés par Tif et 12 autres..'),
+                    child: const Text(
+                      'aimés par Tif et 12 autres..',
+                      style: TextStyle(color: Colors.grey),
+                    ),
                   ),
                 ],
               )

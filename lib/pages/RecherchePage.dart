@@ -214,13 +214,14 @@ class _RecherchePageState extends State<RecherchePage> {
                   ),
                   Expanded(
                     child: GridView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           mainAxisExtent: MediaQuery.of(context).size.height /
                               3.5, // Ajustez cette valeur en fonction de la taille souhaitée
-                          mainAxisSpacing: 2.0,
-                          crossAxisSpacing: 2.0,
+                          mainAxisSpacing: 3.5,
+                          crossAxisSpacing: 10,
                           maxCrossAxisExtent:
-                              MediaQuery.of(context).size.height / 2.3),
+                              MediaQuery.of(context).size.width / 2.1),
                       itemCount: categorieSelected == null
                           ? productNamesSet
                               .where((productName) => (productName.nom!

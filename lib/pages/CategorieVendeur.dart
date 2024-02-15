@@ -5,6 +5,7 @@ import 'package:shopapp/widget/produiWidget.dart';
 
 import '../controllers.dart/appController.dart';
 import '../models/productModels.dart';
+import '../widget/promotionSlider.dart';
 
 // ignore: must_be_immutable
 class CategorieVendeur extends StatefulWidget {
@@ -64,6 +65,16 @@ class _CategorieVendeurState extends State<CategorieVendeur> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () {
+                  showFilterBottomSheet(context, filtrerProduits);
+                },
+                icon: const Icon(
+                  Icons.filter_list,
+                  color: Colors.red,
+                ))
+          ],
           backgroundColor: Colors.transparent,
           elevation: 0,
           title: Text(
@@ -75,73 +86,28 @@ class _CategorieVendeurState extends State<CategorieVendeur> {
         ),
         body: Column(
           children: [
-            Container(
-              // color: Colors.red,
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  // const Text(
-                  //   'Recherche',
-                  //   style: TextStyle(color: Colors.white, fontSize: 17),
-                  // ),
-                  // const SizedBox(
-                  //   width: 10,
-                  // ),
-                  Expanded(
-                    child: Card(
-                      elevation: 0,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                        child: TextField(
-                          onChanged: (query) {
-                            setState(() {
-                              filterQuery = query;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            fillColor: Colors.grey.withOpacity(0.2),
-                            filled: true,
-                            hintText:
-                                'Rechercher une catégorie ou un nom de produit',
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.transparent,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          elevation: 2,
-                          backgroundColor: Colors.white,
-                          padding: const EdgeInsets.all(10),
-                          shape: const CircleBorder()),
-                      onPressed: () {
-                        showFilterBottomSheet(context, filtrerProduits);
-                      },
-                      child: const Icon(
-                        Icons.filter_list,
-                        color: Colors.red,
-                      ))
-                ],
-              ),
-            ),
             Expanded(
-              child: SingleChildScrollView(
-                child: Wrap(
-                  alignment: WrapAlignment.start,
-                  children: produitsFiltres
+              child: GridView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    mainAxisExtent: MediaQuery.of(context).size.height /
+                        3.5, // Ajustez cette valeur en fonction de la taille souhaitée
+                    mainAxisSpacing: 3.5,
+                    crossAxisSpacing: 10,
+                    maxCrossAxisExtent:
+                        MediaQuery.of(context).size.width / 2.1),
+                itemCount: produitsFiltres
+                    .where((element) =>
+                        element.categorie! == widget.categorieSelected)
+                    .where((productName) => (productName.nom!
+                            .toLowerCase()
+                            .contains(filterQuery.toLowerCase()) ||
+                        productName.categorie!
+                            .toLowerCase()
+                            .contains(filterQuery.toLowerCase())))
+                    .length,
+                itemBuilder: (context, index) {
+                  Produit product = produitsFiltres
                       .where((element) =>
                           element.categorie! == widget.categorieSelected)
                       .where((productName) => (productName.nom!
@@ -150,11 +116,9 @@ class _CategorieVendeurState extends State<CategorieVendeur> {
                           productName.categorie!
                               .toLowerCase()
                               .contains(filterQuery.toLowerCase())))
-                      .map((e) => ProduitWidget(
-                            produit: e,
-                          ))
-                      .toList(),
-                ),
+                      .elementAt(index);
+                  return ProduitWidget(produit: product);
+                },
               ),
             )
           ],

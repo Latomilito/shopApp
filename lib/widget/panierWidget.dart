@@ -18,9 +18,9 @@ class _ApercuPanierState extends State<panierWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 1,
+      elevation: 0,
       child: Padding(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(0),
         child: Column(
           children: [
             Container(
@@ -50,19 +50,32 @@ class _ApercuPanierState extends State<panierWidget> {
                         style:
                             const TextStyle(fontSize: 17, color: Colors.black),
                       ),
-                      const Text(
-                        '5000 FCFA',
-                        style: TextStyle(
+                      Text(
+                        '${widget.cartitem!.price!.toStringAsFixed(0)} FCFA',
+                        style: const TextStyle(
                           color: Colors.red,
                         ),
                       ),
                       Text(
-                        '${widget.cartitem!.price!.toStringAsFixed(0)}x${widget.cartitem!.quantity.toStringAsFixed(0)}',
+                        '${widget.cartitem!.price!.toStringAsFixed(0)}x${widget.cartitem!.quantity.toStringAsFixed(0)} = ${(widget.cartitem!.price! * widget.cartitem!.quantity).toStringAsFixed(0)} FCFA',
                         style: const TextStyle(
                           color: Colors.black,
                         ),
                       ),
-                      Text(widget.cartitem!.instruction!)
+                      const Spacer(),
+                      const Card(
+                        elevation: 0,
+                        // color: Colors.grey,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 2,
+                          ),
+                          child: Text(
+                            'Sana\'s market',
+                            style: TextStyle(color: Colors.green),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                   const Spacer(),
@@ -78,7 +91,7 @@ class _ApercuPanierState extends State<panierWidget> {
                             },
                             child: const Icon(
                               Icons.add,
-                              color: Colors.red,
+                              color: Colors.black,
                             ),
                           ),
                         ),
@@ -91,7 +104,7 @@ class _ApercuPanierState extends State<panierWidget> {
                             },
                             child: const Icon(
                               Icons.remove,
-                              color: Colors.red,
+                              color: Colors.black,
                             ),
                           ),
                         )
