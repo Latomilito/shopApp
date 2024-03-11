@@ -47,12 +47,12 @@ class _SliderProductState extends State<SliderPromotion> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(10)),
+      borderRadius: const BorderRadius.all(Radius.circular(0)),
       child: Padding(
         padding: const EdgeInsets.all(5),
         child: Container(
           decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10))),
+              borderRadius: BorderRadius.all(Radius.circular(0))),
           height: MediaQuery.of(context).size.height / 5.5,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -76,7 +76,7 @@ class _SliderProductState extends State<SliderPromotion> {
                               // );
                               return ClipRRect(
                                   borderRadius: const BorderRadius.all(
-                                      Radius.circular(10)),
+                                      Radius.circular(0)),
                                   child: widget.isAcceuilPage!
                                       ? Image.asset(
                                           widget.images[index],

@@ -35,7 +35,7 @@ class _DetailsPage3State extends State<DetailsPage3> {
           // title:
         ),
         body: Padding(
-          padding: const EdgeInsets.all(2),
+          padding: const EdgeInsets.only(left: 2, right: 2, bottom: 10),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -44,10 +44,22 @@ class _DetailsPage3State extends State<DetailsPage3> {
                     children: [
                       Row(
                         children: [
-                          const Expanded(
-                              child: Divider(
-                            color: Colors.red,
-                          )),
+                          // const Expanded(
+                          //     child: Column(
+                          //   children: [
+                          //     Text(
+                          //       '30 abonnements',
+                          //       style:
+                          //           TextStyle(color: Colors.grey, fontSize: 18),
+                          //     ),
+                          //     Divider(
+                          //       color: Colors.red,
+                          //     ),
+                          //   ],
+                          // )),
+                          const SizedBox(
+                            width: 10,
+                          ),
                           ClipRRect(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(120)),
@@ -58,60 +70,95 @@ class _DetailsPage3State extends State<DetailsPage3> {
                                 imageUrl: repositoryController
                                     .allproduits.first.images!.first),
                           ),
-                          const Expanded(
-                              child: Divider(
-                            color: Colors.red,
+                          Expanded(
+                              child: Column(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Row(
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(builder:
+                                                (BuildContext context) {
+                                          return BoutiquePage();
+                                        }));
+                                      },
+                                      child: const Text(
+                                        'Sana\'s market',
+                                        style: TextStyle(
+                                            color: Colors.red, fontSize: 15),
+                                      ),
+                                    ),
+                                    const Text(
+                                      '50 abonnées',
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 18),
+                                    ),
+                                    const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      child: Text(
+                                        '|',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const Divider(
+                                color: Colors.red,
+                              ),
+                            ],
                           ))
                         ],
                       ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return BoutiquePage();
-                          }));
-                        },
-                        child: const Text(
-                          'Sana\'s market',
-                          style: TextStyle(color: Colors.red, fontSize: 15),
-                        ),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(30)))),
-                        onPressed: () {},
-                        child: const Text(
-                          'S\'abonner',
-                          style: TextStyle(
-                            color: Colors.red,
-                          ),
-                        ),
-                      )
                     ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: Text(
                     widget.publication!.description!,
-                    textAlign: TextAlign.justify,
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                    // textAlign: TextAlign.left,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
                   ),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Wrap(
-                  alignment: WrapAlignment.start,
-                  children: widget.produits!
-                      .map((e) => ProduitWidget(
-                            produit: e,
-                          ))
-                      .toList(),
-                )
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      mainAxisSpacing: 3.5, crossAxisCount: 1),
+                  itemCount: widget.produits!.length,
+                  itemBuilder: (context, index) {
+                    Produit produit = widget.produits![index];
+                    return Hero(
+                      tag: 'bon',
+                      // tag: widget.produits![index].id!,
+                      child: ProduitWidget(
+                        produits: widget.produits,
+                        isPageDetails3: true,
+                        produit: produit,
+                        isAllList: true,
+                        isCreateCategorie: false,
+                        isFromcategorie: false,
+                      ),
+                    );
+                  },
+                ),
+                TextButton(
+                    onPressed: () {},
+                    child: Text(
+                        'Voir d\'autres ${widget.produits!.first.categorie}'))
               ],
             ),
           ),

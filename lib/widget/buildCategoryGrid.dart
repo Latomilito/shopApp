@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shopapp/controllers.dart/appController.dart';
 import 'package:shopapp/models/StandarPublication.dart';
 import 'package:shopapp/pages/BoutiquePage.dart';
+import 'package:shopapp/pages/ViewProduit.dart';
 import 'package:shopapp/pages/producDetails2.dart';
 import 'package:shopapp/pages/produitdetails3.dart';
 import 'package:shopapp/utility/Utility.dart';
@@ -15,15 +16,17 @@ import '../pages/ComSheet.dart';
 class buildCategoryGrid extends StatefulWidget {
   final List<Produit> produits;
   final String title;
+  BuildContext? context1;
   PublicationStandard? publication;
   final int nombreArticles;
   final Widget? pageToOpen; // Nouveau paramètre
 
   buildCategoryGrid({
+    this.context1,
     this.publication,
     required this.produits,
     required this.title,
-    this.nombreArticles = 8,
+    this.nombreArticles = 12,
     this.pageToOpen, // Ajout du nouveau paramètre
   });
 
@@ -31,7 +34,8 @@ class buildCategoryGrid extends StatefulWidget {
   _YourWidgetState createState() => _YourWidgetState();
 }
 
-class _YourWidgetState extends State<buildCategoryGrid> {
+class _YourWidgetState extends State<buildCategoryGrid>
+    with SingleTickerProviderStateMixin {
   List<Produit>? produitsMelange;
   final PageController _pageController = PageController();
   int pageindex = 0;
@@ -67,17 +71,17 @@ class _YourWidgetState extends State<buildCategoryGrid> {
       child: Card(
         elevation: 0,
         margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-        color: Colors.black.withOpacity(0.05),
+        color: Colors.grey.withOpacity(0.05),
         // color: Colors.orangeAccent.withOpacity(0.2),
         // elevation: 0,
         child: Padding(
           padding: EdgeInsets.only(
-              // bottom: 8,
-              right: widget.title != '' ? 0 : 8,
-              left: widget.title != '' ? 0 : 8),
+              // bottom: 12,
+              right: widget.title != '' ? 0 : 12,
+              left: widget.title != '' ? 0 : 12),
           child: Column(
             children: [
-              // Divider(),
+              const Divider(),
               widget.publication == null
                   ? buildCategorySection(
                       nombrearticle: widget.produits.length,
@@ -90,7 +94,7 @@ class _YourWidgetState extends State<buildCategoryGrid> {
                 physics: const NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(5),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: widget.produits.length < 8
+                  crossAxisCount: widget.produits.length < 12
                       ? widget.nombreArticles % 2 == 0
                           ? (widget.nombreArticles == 2
                               ? widget.nombreArticles
@@ -109,7 +113,7 @@ class _YourWidgetState extends State<buildCategoryGrid> {
                   return GestureDetector(
                     onTap: () {
                       widget.publication != null
-                          ? index == 7 &&
+                          ? index == 11 &&
                                   (widget.produits.length -
                                           widget.nombreArticles) !=
                                       0
@@ -122,30 +126,35 @@ class _YourWidgetState extends State<buildCategoryGrid> {
                                 }))
                               : Navigator.of(context).push(MaterialPageRoute(
                                   builder: (BuildContext context) {
+                                  // return ViewProduit(
+                                  //   pageController: PageController(
+                                  //       initialPage: widget.produits
+                                  //           .indexOf(widget.produits[index])),
+                                  //   quantity: 1,
+                                  //   prouit: widget.produits[index],
+                                  //   produits: widget.produits,
+                                  // );
                                   return DetailsPage2(
                                     produit: widget.produits[index],
                                     isFromCategorie: false,
                                   );
                                 }))
-                          // ? Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (BuildContext context) {
-                          //     return Historie(
-                          //       isStory: false,
-                          //       index1: index,
-                          //       pageController:
-                          //           PageController(initialPage: index),
-                          //       publications: [widget.publication!],
-                          //       produit: produitsMelange,
-                          //     );
-                          //   }))
-                          // ? _showGridViewDialog(produitsMelange!, index)
                           : Navigator.of(context).push(
-                              index != 7
+                              index != 11
                                   ? MaterialPageRoute(
                                       builder: (BuildContext context) {
-                                        return DetailsPage2(
-                                          produit: widget.produits[index],
-                                          isFromCategorie: false,
+                                        // return DetailsPage2(
+                                        //   produit: widget.produits[index],
+                                        //   isFromCategorie: false,
+                                        // );
+                                        return ViewProduit(
+                                          pageController: PageController(
+                                              initialPage: widget.produits
+                                                  .indexOf(
+                                                      widget.produits[index])),
+                                          quantity: 1,
+                                          prouit: widget.produits[index],
+                                          produits: widget.produits,
                                         );
                                       },
                                     )
@@ -166,11 +175,11 @@ class _YourWidgetState extends State<buildCategoryGrid> {
                           : const EdgeInsets.symmetric(
                               horizontal: 2, vertical: 2),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                          borderRadius: BorderRadius.circular(0)),
                       elevation: 0,
                       color: Colors.white,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(0),
                         child: Stack(
                           children: [
                             CachedNetworkImage(
@@ -203,21 +212,21 @@ class _YourWidgetState extends State<buildCategoryGrid> {
                               fit: BoxFit.cover,
                             ),
                             Container(
-                              color: index == 7 &&
+                              color: index == 11 &&
                                       (widget.produits.length -
                                               widget.nombreArticles) !=
                                           0
                                   ? Colors.black.withOpacity(0.6)
                                   : Colors.transparent,
                               child: Center(
-                                child: index == 7 &&
+                                child: index == 11 &&
                                         (widget.produits.length -
                                                 widget.nombreArticles) !=
                                             0
                                     ? Text(
                                         widget.publication == null
                                             ? '+${widget.produits.length - widget.nombreArticles + 1}'
-                                            : '+${widget.publication!.productIds!.length - 7}',
+                                            : '+${widget.publication!.productIds!.length - 11}',
                                         style: const TextStyle(
                                             color: Colors.white, fontSize: 20),
                                       )
@@ -259,6 +268,7 @@ class _YourWidgetState extends State<buildCategoryGrid> {
                           onPressed: () {
                             showProductBottomSheet(
                               context,
+                              this,
                             );
                             print("Eva Icon heart Pressed");
                           }),
@@ -299,7 +309,7 @@ class _YourWidgetState extends State<buildCategoryGrid> {
       {String? title, PublicationStandard? publication, int? nombrearticle}) {
     return Container(
       // margin: const EdgeInsets.only(top: 5),
-      // padding: const EdgeInsets.only(left: 7),
+      // padding: const EdgeInsets.only(left: 11),
       width: double.infinity,
       // color: Colors.grey.withOpacity(0.1),
       child: Column(
@@ -347,9 +357,9 @@ class _YourWidgetState extends State<buildCategoryGrid> {
                   Text(
                     title!,
                     style: const TextStyle(
-                        color: Colors.red,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold),
+                      color: Colors.black,
+                      fontSize: 17,
+                    ),
                   ),
                 ],
               ),

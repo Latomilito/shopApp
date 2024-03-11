@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shopapp/controllers.dart/appController.dart';
 import 'package:shopapp/pages/AjouterCategoriePage.dart';
+import 'package:shopapp/pages/CatalogAdmin.dart';
 import 'package:shopapp/pages/PageAjouterProduit.dart';
+import 'package:shopapp/pages/promotionPage.dart';
 import 'package:shopapp/pages/watsapCamera.dart';
 import 'package:whatsapp_camera/camera/view_image.dart';
 
@@ -19,9 +22,9 @@ class _PublicationPage2State extends State<PublicationPage2> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Tableau de bord',
-          style: TextStyle(color: Colors.grey),
+          style: GoogleFonts.acme(),
         ),
         actions: [
           IconButton(
@@ -62,21 +65,41 @@ class _PublicationPage2State extends State<PublicationPage2> {
                 color: Colors.red,
               ),
               optionwidget(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) {
+                      return const CatalogAdmin();
+                    },
+                  ));
+                },
                 icon: Icons.list_alt_outlined,
                 text: 'Gerer mon catalogue',
                 color: Colors.yellow,
               ),
               optionwidget(
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return const OfferPublishScreen();
+                  }));
+                },
                 icon: Icons.newspaper_sharp,
-                text: 'Faire une annonce',
+                text: 'Faire une réduction',
                 color: Colors.green,
               ),
               optionwidget(
+                onPressed: () {},
                 icon: Icons.local_offer_outlined,
                 text: 'Promouvoir un produit',
                 color: Colors.orange,
               ),
               optionwidget(
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return const OfferPublishScreen();
+                  }));
+                },
                 icon: Icons.newspaper_outlined,
                 text: 'Faire une annonce',
                 color: Colors.blue,
@@ -106,7 +129,7 @@ class optionwidget extends StatelessWidget {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
             elevation: 0,
-            backgroundColor: Colors.grey.withOpacity(0.3),
+            // backgroundColor: Colors.grey.withOpacity(0.3),
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5)))),
         onPressed: onPressed,

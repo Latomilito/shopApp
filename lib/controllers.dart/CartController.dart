@@ -18,8 +18,9 @@ class CartController extends GetxController {
     ever(authController.usermodel, changeCartTotalPrice);
   }
 
-  void addProductToCart(List<Produit> produits, BuildContext context,
-      int quantity, String instruction) {
+  void addProductToCart(
+      List<Produit> produits, BuildContext context, int quantity,
+      {String? instruction}) {
     try {
       for (var i = 0; i < produits.length; i++) {
         if (_isItemAlreadyAdded(produits[i])) {
@@ -45,15 +46,27 @@ class CartController extends GetxController {
       }
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
+          backgroundColor: Colors.white,
           showCloseIcon: true,
           shape: BeveledRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10))),
           // backgroundColor: Colors.red,
-          content: Text(
-            'Produits ajoutés au panier',
-            style: TextStyle(
-                // color: Colors.white,
+          content: Row(
+            children: [
+              Icon(
+                Icons.done,
+                color: Colors.green,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                'Produit ajouter avec succés ',
+                style: TextStyle(
+                  color: Colors.green,
                 ),
+              ),
+            ],
           ),
         ),
       );

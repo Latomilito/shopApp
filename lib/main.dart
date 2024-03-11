@@ -63,15 +63,21 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent)),
           iconButtonTheme: const IconButtonThemeData(
               style: ButtonStyle(
                   iconColor: MaterialStatePropertyAll(Colors.black))),
           bottomNavigationBarTheme:
               const BottomNavigationBarThemeData(backgroundColor: Colors.red),
-          appBarTheme:
-              const AppBarTheme(iconTheme: IconThemeData(color: Colors.black)),
+          appBarTheme: const AppBarTheme(
+              elevation: 0,
+              titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
+              backgroundColor: Colors.white,
+              iconTheme: IconThemeData(color: Colors.black)),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
-          // useMaterial3: true,
+          useMaterial3: false,
         ),
         home: const Myhomepage()
         // home: home(),

@@ -46,7 +46,7 @@ class ToolPage extends StatelessWidget {
               title: const Text('Sécurité'),
               onTap: () {},
             ),
-            authController.usermodel.value.email == 'taylorhak@gmail.com'
+            authController.usermodel.value.email != 'taylorhak@gmail.com'
                 ? ListTile(
                     leading: const Icon(Icons.dashboard_outlined),
                     title: const Text('Tableau de bord'),

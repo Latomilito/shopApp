@@ -15,24 +15,24 @@ class BottomnavigationPage extends StatefulWidget {
 
 class _BottomnavigationPageState extends State<BottomnavigationPage> {
   int _selectedIndex = 0;
-  late final List<Widget> _pages = [
-    const AcceuilPage(),
-    // RecherchePage(),
-    const FavoritePage(),
-    CommandeInfoPage(),
-    HistoriquePage(),
-    const ToolPage()
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _pages = [
+      const AcceuilPage(),
+      const FavoritePage(),
+      CommandeInfoPage(),
+      HistoriquePage(),
+      const ToolPage()
+    ];
+
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
+      ),
+      // body: _pages[_selectedIndex],
+
       bottomNavigationBar: BottomNavigationBar(
         fixedColor: Colors.black,
         unselectedItemColor: Colors.grey,

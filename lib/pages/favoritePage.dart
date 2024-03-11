@@ -28,19 +28,43 @@ class _FavoritePageState extends State<FavoritePage> {
       body: Column(
         children: [
           Expanded(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  mainAxisExtent: MediaQuery.of(context).size.height /
-                      3.5, // Ajustez cette valeur en fonction de la taille souhaitée
-                  mainAxisSpacing: 2.0,
-                  crossAxisSpacing: 2.0,
-                  maxCrossAxisExtent: MediaQuery.of(context).size.height / 2.3),
-              itemCount: repositoryController.allproduits.length,
-              itemBuilder: (context, index) {
-                Produit product = repositoryController.allproduits[index];
-                return ProduitWidget(produit: product);
-              },
-            ),
+            child: StreamBuilder<List<Produit>>(
+                stream: repositoryController.allproduct(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(child: CircularProgressIndicator()),
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Text('Erreur de chargement des données');
+                  } else {
+                    final List<Produit> produits = snapshot.data!.toList();
+
+                    return GridView.builder(
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          mainAxisExtent: MediaQuery.of(context).size.height /
+                              3.5, // Ajustez cette valeur en fonction de la taille souhaitée
+                          mainAxisSpacing: 2.0,
+                          crossAxisSpacing: 2.0,
+                          maxCrossAxisExtent:
+                              MediaQuery.of(context).size.height / 2.3),
+                      itemCount: produits.length,
+                      itemBuilder: (context, index) {
+                        Produit product = produits[index];
+                        return ProduitWidget(
+                          isPageDetails3: false,
+                          isAllList: true,
+                          produit: product,
+                          isCreateCategorie: false,
+                          isFromcategorie: false,
+                        );
+                      },
+                    );
+                  }
+                }),
           )
         ],
       ),

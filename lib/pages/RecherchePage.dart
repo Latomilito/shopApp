@@ -250,7 +250,13 @@ class _RecherchePageState extends State<RecherchePage> {
                                     (productName.categorie! ==
                                         categorieSelected))
                                 .elementAt(index);
-                        return ProduitWidget(produit: product);
+                        return ProduitWidget(
+                          isPageDetails3: false,
+                          produit: product,
+                          isFromcategorie: false,
+                          isCreateCategorie: false,
+                          isAllList: true,
+                        );
                       },
                     ),
                   )

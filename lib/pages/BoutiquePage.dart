@@ -7,354 +7,288 @@ import '../widget/buildCategoryGrid.dart';
 
 class BoutiquePage extends StatefulWidget {
   @override
-  State<BoutiquePage> createState() => _homeState();
+  State<BoutiquePage> createState() => _BoutiquePageState();
 }
 
-class _homeState extends State<BoutiquePage> {
+class _BoutiquePageState extends State<BoutiquePage> {
   int _currentPage = 0;
-  // List<String> categories = [];
-  PageController pageController = PageController(initialPage: 0);
+  // PageController _pageController = PageController(initialPage: 0);
 
   @override
   void initState() {
     super.initState();
-    // repositoryController.allproduits.forEach((element) {
-    //   categories.add(element.categorie!);
-    // });
+    // Initialisez vos données ici si nécessaire
   }
 
   @override
   Widget build(BuildContext context) {
-    Set<Produit> categoriesSet =
-        repositoryController.allproduits.map((element) => element).toSet();
-    List<Produit> creerListeAvecImagesMultiples(List<Produit> produits) {
-      List<Produit> nouvelleListe = [];
-
-      for (Produit produit in produits) {
-        for (String image in produit.images!) {
-          // Créer une copie du produit avec une seule image
-          Produit nouveauProduit = Produit(
-              id: produit.id,
-              description: produit.description,
-              categorie: produit.categorie,
-              estNouveau: produit.estNouveau,
-              prix: produit.prix,
-              estPopulaire: produit.estPopulaire,
-              nom: produit.nom,
-              images: [image]);
-          nouvelleListe.add(nouveauProduit);
-        }
-      }
-
-      return nouvelleListe;
-    }
-
     final List<String> images = [
       'assets/pub.jpg',
       'assets/pub1.jpg',
     ];
 
     return Scaffold(
-        body: SafeArea(
-      child: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverAppBar(
-              // centerTitle: true,
-              backgroundColor: Colors.white,
-              elevation: 0, expandedHeight: 200,
-              // expandedHeight: 200.0,
-              floating: true,
-              pinned: true,
-              stretch: true,
-
-              flexibleSpace: FlexibleSpaceBar(
-                // centerTitle: true,
-                title: const Text(
-                  'Sana\'s market',
-                  style: TextStyle(color: Colors.black),
-                ),
-                background: Column(
-                  children: [
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(360)),
-                        child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            height: 100,
-                            width: 110,
-                            imageUrl: repositoryController
-                                .allproduits[8].images!.first),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ];
-        },
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(2),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 50,
-                ),
-                const Card(
-                  elevation: 2,
-                  color: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  margin: EdgeInsets.only(top: 10, right: 5, left: 5),
-                  child: Padding(
-                    padding: EdgeInsets.all(5),
+      body: SafeArea(
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                bottom: PreferredSize(
+                  preferredSize: Size(MediaQuery.of(context).size.width, 70),
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    margin: const EdgeInsets.only(top: 10),
+                    color: Colors.white,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(
-                          'S\'abonné',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _currentPage = 0;
+                              });
+                              // _pageController.jumpToPage(_currentPage);
+                            },
+                            child: Container(
+                              height: 60,
+                              padding: const EdgeInsets.only(bottom: 10),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    width: 2,
+                                    color: _currentPage == 0
+                                        ? Colors.red
+                                        : Colors.transparent,
+                                  ),
+                                ),
+                              ),
+                              child: const Text(
+                                'Publications',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                        Icon(
-                          Icons.add,
-                          color: Colors.white,
-                          size: 18,
-                        )
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _currentPage = 1;
+                              });
+                              // _pageController.jumpToPage(_currentPage);
+                            },
+                            child: Container(
+                              height: 60,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              padding: const EdgeInsets.only(bottom: 10),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    width: 2,
+                                    color: _currentPage == 1
+                                        ? Colors.red
+                                        : Colors.transparent,
+                                  ),
+                                ),
+                              ),
+                              child: const Text(
+                                'Catalogue',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  margin: const EdgeInsets.only(top: 10),
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                backgroundColor: Colors.white,
+                elevation: 0,
+                expandedHeight: 200,
+                pinned: true,
+                stretch: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: const Text(
+                    'Sana\'s market',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  background: Column(
                     children: [
-                      Expanded(
-                          child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _currentPage = 0;
-                          });
-                          pageController.jumpToPage(_currentPage);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(
-                            width: 2,
-                            color: _currentPage == 0
-                                ? Colors.red
-                                : Colors.transparent,
-                          ))),
-                          child: const Text(
-                            'Pulications',
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      )),
                       const SizedBox(
-                        width: 5,
+                        height: 30,
                       ),
-                      Expanded(
-                          child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _currentPage = 1;
-                          });
-                          pageController.jumpToPage(_currentPage);
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          padding: const EdgeInsets.only(bottom: 10),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(
-                            width: 2,
-                            color: _currentPage == 1
-                                ? Colors.red
-                                : Colors.transparent,
-                          ))),
-                          child: const Text(
-                            'Catalogue',
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
+                      SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(360)),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            height: 100,
+                            width: 110,
+                            imageUrl: repositoryController
+                                .allproduits[8].images!.first,
                           ),
                         ),
-                      )),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: PageView(
-                    // physics: const NeverScrollableScrollPhysics(),
-                    controller: pageController,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentPage = index;
-                      });
-                    },
-                    children: [
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            StreamBuilder<List<PublicationStandard>>(
-                              // stream: repositoryController.allpublication(),
-                              stream: null,
-                              builder: (BuildContext context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Center(
-                                          child: CircularProgressIndicator()),
-                                    ],
-                                  );
-                                } else if (snapshot.hasError) {
-                                  return const Text(
-                                      'Erreur de chargement des données');
-                                } else {
-                                  // final List<PublicationStandard> publication =
-                                  //     snapshot
-                                  //         .data!
-                                  //         .where((element) =>
-                                  //             element.productIds!.isNotEmpty)
-                                  //         .toList();
-                                  final List<PublicationStandard> publication =
-                                      repositoryController.allpublications
-                                          .where((element) =>
-                                              element.productIds!.isNotEmpty)
-                                          .toList();
-
-                                  return ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: publication.length,
-                                    itemBuilder: (context, index) {
-                                      List<String> produitsid =
-                                          publication[index].productIds!;
-                                      List<Produit> produits =
-                                          repositoryController.allproduits
-                                              .where((element) => produitsid
-                                                  .contains(element.id))
-                                              .toList();
-                                      // String categorie =
-                                      //     produitsParCategorie.keys.elementAt(index);
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          buildCategoryGrid(
-                                              publication: publication[index],
-                                              nombreArticles: publication[index]
-                                                  .productIds!
-                                                  .length,
-                                              produits: produits,
-                                              title: ''),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            StreamBuilder<List<Produit>>(
-                              // stream: repositoryController.allproduct(),
-                              stream: null,
-                              builder: (BuildContext context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Center(
-                                          child: CircularProgressIndicator()),
-                                    ],
-                                  );
-                                } else if (snapshot.hasError) {
-                                  return const Text(
-                                      'Erreur de chargement des données');
-                                } else {
-                                  // final List<Produit> produits = snapshot.data!;
-                                  final List<Produit> produits =
-                                      repositoryController.allproduits;
-
-                                  Map<String, List<Produit>>
-                                      produitsParCategorie = {};
-                                  for (var produit in produits) {
-                                    if (!produitsParCategorie
-                                        .containsKey(produit.categorie!)) {
-                                      produitsParCategorie[produit.categorie!] =
-                                          [];
-                                    }
-                                    produitsParCategorie[produit.categorie!]!
-                                        .add(produit);
-                                  }
-
-                                  return ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: produitsParCategorie.length,
-                                    itemBuilder: (context, index) {
-                                      String categorie = produitsParCategorie
-                                          .keys
-                                          .elementAt(index);
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          buildCategoryGrid(
-                                              nombreArticles: 8,
-                                              produits:
-                                                  creerListeAvecImagesMultiples(
-                                                      produitsParCategorie[
-                                                          categorie]!),
-                                              title: categorie),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
-                              },
-                            ),
-                          ],
-                        ),
                       ),
                     ],
                   ),
                 ),
-              ],
+              ),
+            ];
+          },
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(2),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: IndexedStack(
+                      index: _currentPage,
+                      children: const [
+                        Page1(),
+                        Page2(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
-    ));
+    );
+  }
+}
+
+class Page1 extends StatelessWidget {
+  const Page1({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          StreamBuilder<List<PublicationStandard>>(
+            stream: repositoryController.allpublication(),
+            builder: (BuildContext context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(child: CircularProgressIndicator()),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return const Text('Erreur de chargement des données');
+              } else {
+                final List<PublicationStandard> publications = snapshot.data!
+                    .where((element) => element.productIds!.isNotEmpty)
+                    .toList();
+
+                return ListView.builder(
+                  reverse: true,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: publications.length,
+                  itemBuilder: (context, index) {
+                    List<String> produitIds = publications[index].productIds!;
+                    List<Produit> produits = repositoryController.allproduits
+                        .where((element) => produitIds.contains(element.id))
+                        .toList();
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        buildCategoryGrid(
+                          publication: publications[index],
+                          nombreArticles:
+                              publications[index].productIds!.length,
+                          produits: produits,
+                          title: '',
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Page2 extends StatelessWidget {
+  const Page2({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          StreamBuilder<List<Produit>>(
+            stream: repositoryController.allproduct(),
+            builder: (BuildContext context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(child: CircularProgressIndicator()),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return const Text('Erreur de chargement des données');
+              } else {
+                final List<Produit> produits = snapshot.data!;
+                Map<String, List<Produit>> produitsParCategorie = {};
+
+                for (var produit in produits) {
+                  if (!produitsParCategorie.containsKey(produit.categorie!)) {
+                    produitsParCategorie[produit.categorie!] = [];
+                  }
+                  produitsParCategorie[produit.categorie!]!.add(produit);
+                }
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: produitsParCategorie.length,
+                  itemBuilder: (context, index) {
+                    String categorie =
+                        produitsParCategorie.keys.elementAt(index);
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        buildCategoryGrid(
+                          nombreArticles: 8,
+                          produits: produitsParCategorie[categorie]!,
+                          title: categorie,
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

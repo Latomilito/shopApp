@@ -12,16 +12,17 @@ import '../models/userModel.dart';
 import '../models/categorieModel.dart';
 
 class RepositoryController extends GetxController {
+  Rx<Produit> produit = Produit().obs;
   Rx<Usermodel> userselected = Usermodel().obs;
   RxString heureSelection = ''.obs;
   static RepositoryController instance = Get.find();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   late StreamSubscription<List<Produit>> trajetsSubscription;
   late StreamSubscription<List<PublicationStandard>> publicationsSubscription;
-  late StreamSubscription<List<categorieModel>> categorisubscription;
+  late StreamSubscription<List<CategorieModel>> categorisubscription;
   final allproduits = <Produit>[].obs;
   final allpublications = <PublicationStandard>[].obs;
-  final categorilist = <categorieModel>[].obs;
+  final categorilist = <CategorieModel>[].obs;
   @override
   void onInit() {
     super.onInit();
@@ -33,7 +34,7 @@ class RepositoryController extends GetxController {
         allpublication().listen((List<PublicationStandard> data) {
       allpublications.assignAll(data);
     });
-    categorisubscription = allcategories().listen((List<categorieModel> data) {
+    categorisubscription = allcategories().listen((List<CategorieModel> data) {
       categorilist.assignAll(data);
     });
   }
@@ -115,6 +116,39 @@ class RepositoryController extends GetxController {
     }
   }
 
+  Future<void> ajouterCategorie(
+      CategorieModel categorie, BuildContext context) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    firestore.settings = const Settings(persistenceEnabled: true);
+    try {
+      return await firestore.collection('categories').doc(categorie.id).set({
+        'id': categorie.id,
+        'nom': categorie.name,
+        'description': categorie.description,
+        'images': categorie.images,
+        'userId': categorie.userId
+      });
+    } catch (e) {
+      Get.back();
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: 'Erreur',
+        desc: "Une erreur s\'est Produite",
+        buttons: [
+          DialogButton(
+            onPressed: () => Get.back(),
+            color: Colors.red,
+            child: const Text(
+              "Ok",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ],
+      ).show();
+    }
+  }
+
   Stream<List<Produit>> allproduct() {
     return _db.collection('produits').snapshots().map((querySnapshot) =>
         querySnapshot.docs.map((doc) => Produit.fromsnapshot(doc)).toList());
@@ -130,25 +164,13 @@ class RepositoryController extends GetxController {
             .toList());
   }
 
-  Stream<List<categorieModel>> allcategories() {
+  Stream<List<CategorieModel>> allcategories() {
     return _db
         .collection('categories')
         // .orderBy('datee', descending: true)
         .snapshots()
         .map((querySnapshot) => querySnapshot.docs
-            .map((doc) => categorieModel.fromsnapshot(doc))
+            .map((doc) => CategorieModel.fromsnapshot(doc))
             .toList());
-  }
-
-  Future<void> ajouterCategorie(categorieModel categorie) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection('categories')
-          .doc(categorie.id)
-          .set({
-        'id': categorie.id,
-        'name': categorie.name,
-      });
-    } catch (e) {}
   }
 }

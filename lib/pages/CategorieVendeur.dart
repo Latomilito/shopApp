@@ -18,7 +18,10 @@ class CategorieVendeur extends StatefulWidget {
 
 class _CategorieVendeurState extends State<CategorieVendeur> {
   List<Produit> produitsFiltres = [];
-
+  final List<String> images = [
+    'assets/pub.jpg',
+    'assets/pub1.jpg',
+  ];
   Set<Produit> productNamesSet =
       repositoryController.allproduits.map((element) => element).toSet();
 
@@ -72,7 +75,7 @@ class _CategorieVendeurState extends State<CategorieVendeur> {
                 },
                 icon: const Icon(
                   Icons.filter_list,
-                  color: Colors.red,
+                  color: Colors.black,
                 ))
           ],
           backgroundColor: Colors.transparent,
@@ -84,30 +87,143 @@ class _CategorieVendeurState extends State<CategorieVendeur> {
             ),
           ),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    mainAxisExtent: MediaQuery.of(context).size.height /
-                        3.5, // Ajustez cette valeur en fonction de la taille souhaitée
-                    mainAxisSpacing: 3.5,
-                    crossAxisSpacing: 10,
-                    maxCrossAxisExtent:
-                        MediaQuery.of(context).size.width / 2.1),
-                itemCount: produitsFiltres
-                    .where((element) =>
-                        element.categorie! == widget.categorieSelected)
-                    .where((productName) => (productName.nom!
-                            .toLowerCase()
-                            .contains(filterQuery.toLowerCase()) ||
-                        productName.categorie!
-                            .toLowerCase()
-                            .contains(filterQuery.toLowerCase())))
-                    .length,
-                itemBuilder: (context, index) {
-                  Produit product = produitsFiltres
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: Column(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SliderPromotion(images: images),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  // color: Colors.grey.withOpacity(0.2),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Produits populaire',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Container(
+                  child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: produitsFiltres
+                            .where((element) =>
+                                element.categorie! == widget.categorieSelected)
+                            .where((productName) => (productName.nom!
+                                    .toLowerCase()
+                                    .contains(filterQuery.toLowerCase()) ||
+                                productName.categorie!
+                                    .toLowerCase()
+                                    .contains(filterQuery.toLowerCase())))
+                            .map((e) {
+                          return ProduitWidget(
+                            produits: [e],
+                            isPageDetails3: false,
+                            isAllList: false,
+                            produit: e,
+                            isCreateCategorie: false,
+                            isFromcategorie: true,
+                          );
+                        }).toList(),
+                      )),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  // color: Colors.grey.withOpacity(0.2),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Nouveautés',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Container(
+                  child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: produitsFiltres
+                            .where((element) =>
+                                element.categorie! == widget.categorieSelected)
+                            .where((productName) => (productName.nom!
+                                    .toLowerCase()
+                                    .contains(filterQuery.toLowerCase()) ||
+                                productName.categorie!
+                                    .toLowerCase()
+                                    .contains(filterQuery.toLowerCase())))
+                            .map((e) {
+                          return ProduitWidget(
+                            produits: [e],
+                            isPageDetails3: false,
+                            isFromcategorie: true,
+                            isAllList: false,
+                            produit: e,
+                            isCreateCategorie: false,
+                          );
+                        }).toList(),
+                      )),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  // color: Colors.grey.withOpacity(0.2),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Tous les produis',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ),
+                // Wrap(
+                //   children: produitsFiltres
+                //       .where((element) =>
+                //           element.categorie! == widget.categorieSelected)
+                //       .where((productName) => (productName.nom!
+                //               .toLowerCase()
+                //               .contains(filterQuery.toLowerCase()) ||
+                //           productName.categorie!
+                //               .toLowerCase()
+                //               .contains(filterQuery.toLowerCase())))
+                //       .map((e) {
+                //     return ProduitWidget(
+                //       isAllList: true,
+                //       produit: e,
+                //       isCreateCategorie: false,
+                //     );
+                //   }).toList(),
+                // ),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      mainAxisExtent: MediaQuery.of(context).size.height /
+                          3.8, // Ajustez cette valeur en fonction de la taille souhaitée
+                      mainAxisSpacing: 3.5,
+                      // crossAxisSpacing: 5,
+                      maxCrossAxisExtent:
+                          MediaQuery.of(context).size.width / 2),
+                  itemCount: produitsFiltres
                       .where((element) =>
                           element.categorie! == widget.categorieSelected)
                       .where((productName) => (productName.nom!
@@ -116,12 +232,31 @@ class _CategorieVendeurState extends State<CategorieVendeur> {
                           productName.categorie!
                               .toLowerCase()
                               .contains(filterQuery.toLowerCase())))
-                      .elementAt(index);
-                  return ProduitWidget(produit: product);
-                },
-              ),
-            )
-          ],
+                      .length,
+                  itemBuilder: (context, index) {
+                    Produit product = produitsFiltres
+                        .where((element) =>
+                            element.categorie! == widget.categorieSelected)
+                        .where((productName) => (productName.nom!
+                                .toLowerCase()
+                                .contains(filterQuery.toLowerCase()) ||
+                            productName.categorie!
+                                .toLowerCase()
+                                .contains(filterQuery.toLowerCase())))
+                        .elementAt(index);
+                    return ProduitWidget(
+                      produits: [product],
+                      produit: product,
+                      isPageDetails3: false,
+                      isCreateCategorie: false,
+                      isAllList: true,
+                      isFromcategorie: true,
+                    );
+                  },
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -157,7 +292,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               children: [
                 Text(
                   '$_minPrice - $_maxPrice',
-                  style: const TextStyle(color: Colors.black, fontSize: 20),
+                  style:
+                      const TextStyle(color: Colors.transparent, fontSize: 20),
                 ),
               ],
             ),
